@@ -49,7 +49,7 @@ const Controls = props =>{
                     }
                 </CardBody>
                 <CardFooter >
-                    <h5 style={{color : "#696969"}}><i>Price : -- BDT</i></h5>
+                    <h5 style={{color : "#696969"}}><i>Price : {props.totalPrice} /- BDT</i></h5>
                 </CardFooter>
             </Card>
         </div>
