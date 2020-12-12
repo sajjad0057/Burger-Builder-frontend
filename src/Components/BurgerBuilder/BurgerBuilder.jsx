@@ -8,10 +8,38 @@ export default class BurgerBuilder extends Component {
 
   state = {
     ingredients : [
-      {type : 'salad' , amount : 1},
-      { type : 'cheese', amount : 1 },
-      {type : 'meat', amount : 2}
+      {type : 'salad' , amount : 0},
+      { type : 'cheese', amount : 0 },
+      {type : 'meat', amount : 0}
     ]
+  }
+
+  addIngredientHandle = type =>{
+    const ingredients = [...this.state.ingredients]
+    //console.log("Check ---->",ingredients);
+    for (let item of ingredients){
+      if (item.type===type){
+        item.amount++;
+      }
+
+    }
+    this.setState({
+      ingredients : ingredients
+    })
+  }
+
+  removeIngredientHandle = type =>{
+    const ingredients = [...this.state.ingredients]
+    console.log("Check ---->",ingredients);
+    for (let item of ingredients){
+      if (item.type===type && item.amount>0){
+        item.amount--;
+      }
+
+    }
+    this.setState({
+      ingredients : ingredients
+    })
   }
 
 
@@ -19,7 +47,10 @@ export default class BurgerBuilder extends Component {
     return (
       <div className="d-flex flex-md-row flex-column">
         <Burger ingredients={this.state.ingredients}/>
-        <Controls/>
+        <Controls
+        addIngredient = {this.addIngredientHandle}
+        removeIngredient = {this.removeIngredientHandle}
+        />
       </div>
     );
   }
