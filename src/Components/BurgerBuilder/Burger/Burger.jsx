@@ -10,7 +10,7 @@ const Burger = (props) => {
       //  for(let i=0;i<item.amount;i++){
       //     amountArr.push(i)
       //  }
-      // alternative below :
+      // *** alternative below *** :
       let amountArr = [...Array(item.amount).keys()]; // Using this tachnique we can generate a Array by fixed size..see documentation
       return amountArr.map(() => {
         return <Ingredient type={item.type} key={Math.random()} />;
