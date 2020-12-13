@@ -11,10 +11,10 @@ const BuildControl = props =>{
         <div className="d-flex">
             <div className="mr-auto ml-5" >
                 <span style={{fontWeight:"bold",fontSize:"1.2rem", color : "#696969",textTransform:"capitalize"}}>
-                     {props.type.type} 
+                     {props.item.type} 
                 </span>
                 <span style={{fontWeight:"bold",fontSize:"1.2rem", color : "#696969"}}>
-                {"  "} x {props.type.amount}
+                {"  "} x {props.item.amount}
                 </span>
                 
             </div>
@@ -46,7 +46,7 @@ const Controls = props =>{
                        [...props.ingredients].map(item=>{
                             return <BuildControl
 
-                             type={item} 
+                             item={item} 
                              key={Math.random()}
                              added = {()=>props.addIngredient(item.type)}
                              removed = {()=>props.removeIngredient(item.type)}
