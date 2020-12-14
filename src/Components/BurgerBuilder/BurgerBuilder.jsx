@@ -51,9 +51,9 @@ class BurgerBuilder extends Component {
     this.props.history.push("/checkout");
   };
 
-  componentDidMount() {
-    console.log("BurgerBuilder.jsx--->", this.props);
-  }
+  // componentDidMount() {
+  //   console.log("BurgerBuilder.jsx--->", this.props);
+  // }
 
   render() {
     return (

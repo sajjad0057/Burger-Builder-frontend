@@ -1,10 +1,21 @@
 import React, { Component } from "react";
 import { Button } from "reactstrap";
+import { connect } from "react-redux";
+import axios from "axios";
+
+
+const mapStateToProps = state =>{
+    return{
+        ingredients : state.ingredients,
+        totalPrice : state.totalPrice,
+
+    }
+}
 
 class Checkout extends Component {
   state = {
     values: {
-      deleveryAddress: "",
+      deliveryAddress: "",
       phone: "",
       paymentType: "Cash On Delivery",
     },
@@ -23,24 +34,41 @@ class Checkout extends Component {
     });
   };
   submitHandler = () => {
-    console.log("CheckOut --->", this.state.values);
-    this.setState({
-        values:{
-            deleveryAddress: "",
-            phone: "",
-            paymentType: "Cash On Delivery",
-        }
-    })
+      const order = {
+          ingredients : this.props.ingredients,
+          customer : this.state.values,
+          price : this.props.totalPrice,
+          orderTime : new Date(),
+
+      }
+      axios.post("https://burgerbuilder-308a8-default-rtdb.firebaseio.com/orders.json",order)
+      .then(response=>console.log(response))
+      .catch(err=>console.log(err))            
+       console.log("CheckOut --->", order);
+
 
   };
 
   render() {
     return (
       <div>
-        <form>
+          <h4 style={{
+            color : "#696969",
+            border :"1px solid #f0eee9",
+            boxShadow :"1px 1px #dbd9d5",
+            borderRadius : "5px",
+            padding : "20px"
+        }}>Payment : {this.props.totalPrice}  BDT only </h4>
+
+        <form style={{
+            border :"1px solid #f0eee9",
+            boxShadow :"1px 1px #dbd9d5",
+            borderRadius : "5px",
+            padding : "20px"
+        }}>
           <textarea
-            name="deleveryAddress"
-            value={this.state.values.deleveryAddress}
+            name="deliveryAddress"
+            value={this.state.values.deliveryAddress}
             className="form-control"
             placeholder="Delivery Address"
             onChange={(e)=>this.inputChangeHandenler(e)}
@@ -85,4 +113,4 @@ class Checkout extends Component {
   }
 }
 
-export default Checkout;
+export default connect(mapStateToProps) (Checkout);
