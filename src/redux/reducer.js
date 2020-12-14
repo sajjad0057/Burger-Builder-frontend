@@ -33,8 +33,9 @@ export const reducer = (state = INITIAl_STATE, action) => {
     case actionTypes.REMOVE_INGREDIENT:
       //console.log("reucer.js ---->", ingredients, action.payload);
       for (let item of ingredients) {
+        console.log(item);
         if (item.type === action.payload && item.amount>0) {
-          console.log(item);
+          
           item.amount--;
           return {
             ...state,
