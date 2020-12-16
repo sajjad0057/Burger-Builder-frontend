@@ -14,6 +14,7 @@ const Main = (props) => {
         <Route path="/checkout" component= {Checkout} />
         <Route path="/" exact component = {BurgerBuilder} />
       </div>
+
     </div>
   );
 };
