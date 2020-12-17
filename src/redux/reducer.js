@@ -72,6 +72,7 @@ export const reducer = (state = INITIAl_STATE, action) => {
         purchasable: false,
 
       }
+<<<<<<< HEAD
     case actionTypes.LOAD_ORDERS:
       let orders = []
       //console.log("reducer.js--->check order payload :",action.payload);
@@ -94,6 +95,8 @@ export const reducer = (state = INITIAl_STATE, action) => {
         orders : orders,
         orderLoading : false,
       }
+=======
+>>>>>>> 6107ce04308d3b19588eefbb762dfaf57c1bf8ec
     default:
       return state;
   }
