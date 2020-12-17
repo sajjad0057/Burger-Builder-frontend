@@ -27,7 +27,7 @@ export const resetIngredients = ()=>{
     return{
         type:actionTypes.RESET_INGREDIENTS,
     }
-<<<<<<< HEAD
+
 }
 
 
@@ -48,6 +48,8 @@ export const orderLoadFailed = () =>{
 export const fetchOrders = () => dispatch =>{
     axios.get("https://burgerbuilder-308a8-default-rtdb.firebaseio.com/orders.json")
     .then(response=>dispatch(loadOrders(response.data)))
-=======
->>>>>>> 6107ce04308d3b19588eefbb762dfaf57c1bf8ec
+    .catch(err=>{
+        dispatch(orderLoadFailed())
+    })
+
 }

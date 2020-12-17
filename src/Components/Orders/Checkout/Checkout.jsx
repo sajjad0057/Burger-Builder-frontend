@@ -58,7 +58,7 @@ class Checkout extends Component {
       ingredients: this.props.ingredients,
       customer: this.state.values,
       price: this.props.totalPrice,
-      orderTime: new Date(),
+      orderTime: new Date().toLocaleString(),
     };
     axios
       .post(

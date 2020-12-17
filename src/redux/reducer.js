@@ -72,7 +72,6 @@ export const reducer = (state = INITIAl_STATE, action) => {
         purchasable: false,
 
       }
-<<<<<<< HEAD
     case actionTypes.LOAD_ORDERS:
       let orders = []
       //console.log("reducer.js--->check order payload :",action.payload);
@@ -89,14 +88,20 @@ export const reducer = (state = INITIAl_STATE, action) => {
           id : key,
         })
       }
-      console.log("reducer.js--->check new orders array :",orders);
+      //console.log("reducer.js--->check new orders array :",orders);
       return{
         ...state,
         orders : orders,
         orderLoading : false,
       }
-=======
->>>>>>> 6107ce04308d3b19588eefbb762dfaf57c1bf8ec
+    case actionTypes.ORDER_LOAD_FAILED:
+      return{
+        ...state,
+        orderErr:true,
+        orderLoading : false,
+
+      }
+
     default:
       return state;
   }

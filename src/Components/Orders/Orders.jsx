@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchOrders } from "../../redux/actionCreators.js";
+import Order from "./Order/Order.jsx";
+import Spinner from "../Spinner/Spinner.js";
 
 
 
@@ -26,13 +28,49 @@ class Orders extends Component{
     componentDidMount(){
         this.props.fatchOrders()
     }
-    componentDidUpdate(){
-        console.log("orders.jsx ----check props:",this.props);
-    }
+    // componentDidUpdate(){
+    // console.log("orders.jsx ----check props:",this.props);
+    // }
     render(){
+        let orders=null;
+        if(this.props.orderErr){
+            orders=<div style={{
+                border:"1px solid grey",
+                borderRadius:"5px",
+                margin:"2px",
+                padding:"20px",
+                boxShadow:"1px 1px #888888",
+                }}>
+                <p>Sorry Failed To Load Orders</p>
+                </div>
+        }
+        else{
+            if(this.props.orders.length===0){
+                orders=<div style={{
+                    border:"1px solid grey",
+                    borderRadius:"5px",
+                    margin:"2px",
+                    padding:"20px",
+                    boxShadow:"1px 1px #888888",
+                    }}>
+                    <p>Sorry! you have no orders now</p>
+                    </div>
+
+            }
+            else{
+                orders=this.props.orders.map(order=>{
+                    //console.log("orders.jsx ----order:",order);
+                    return <Order order={order} key={order.id}/>
+                })
+
+            }
+
+        }
+
+
         return(
             <div>
-                <p>Orders</p>
+                {this.props.orderLoading? <Spinner/>:orders }
             </div>
         )
 
