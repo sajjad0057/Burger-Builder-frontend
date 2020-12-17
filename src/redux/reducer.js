@@ -14,6 +14,10 @@ const INITIAl_STATE = {
   ],
   totalPrice: 40,
   purchasable: false,
+  orders : [],
+  orderLoading : true,
+  orderErr : false,
+
 };
 
 export const reducer = (state = INITIAl_STATE, action) => {
@@ -67,6 +71,28 @@ export const reducer = (state = INITIAl_STATE, action) => {
         totalPrice: 40,
         purchasable: false,
 
+      }
+    case actionTypes.LOAD_ORDERS:
+      let orders = []
+      //console.log("reducer.js--->check order payload :",action.payload);
+      for (let key in action.payload){
+        //console.log("reducer.js--->check order order key :",action.payload[key]);
+        // let obj =action.payload[key]
+        // obj.id=key
+        // orders.push(  
+        //   obj
+        // )
+        // *****Alternate way to update order Array given below****
+        orders.push({
+          ...action.payload[key],
+          id : key,
+        })
+      }
+      console.log("reducer.js--->check new orders array :",orders);
+      return{
+        ...state,
+        orders : orders,
+        orderLoading : false,
       }
     default:
       return state;
