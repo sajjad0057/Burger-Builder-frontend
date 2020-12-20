@@ -2,7 +2,7 @@ import React from "react";
 
 
 const Order =(props)=>{
-    console.log("single order.js--->",props);
+    //console.log("single order.js--->",props);
     const ingredientSummery=props.order.ingredients.map(item=>{
         return(
             <span key={item.type}

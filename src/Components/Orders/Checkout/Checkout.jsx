@@ -4,6 +4,7 @@ import { Button, Modal, ModalBody, ModalFooter } from "reactstrap";
 import { connect } from "react-redux";
 import axios from "axios";
 import { resetIngredients } from "../../../redux/actionCreators.js";
+import { Formik } from "formik";
 
 const mapStateToProps = (state) => {
   return {
@@ -20,11 +21,6 @@ const mapDispatchToProps = (dispatch) => {
 
 class Checkout extends Component {
   state = {
-    values: {
-      deliveryAddress: "",
-      phone: "",
-      paymentType: "Cash On Delivery",
-    },
     isLoading: false,
     isModalOpen: false,
     modalMsg: "",
@@ -41,22 +37,13 @@ class Checkout extends Component {
     });
   };
 
-  inputChangeHandenler = (event) => {
-    this.setState((state) => ({
-      // this is recommended and correct for using setState() func.
-      values: {
-        ...state.values,
-        [event.target.name]: event.target.value,
-      },
-    }));
-  };
-  submitHandler = () => {
+  submitHandler = (values) => {
     this.setState({
       isLoading: true,
     });
     const order = {
       ingredients: this.props.ingredients,
-      customer: this.state.values,
+      customer: values,
       price: this.props.totalPrice,
       orderTime: new Date().toLocaleString(),
     };
@@ -67,12 +54,7 @@ class Checkout extends Component {
       )
       .then((response) => {
         if (response.status === 200) {
-          this.setState({
-            values: {
-              deliveryAddress: "",
-              phone: "",
-              paymentType: "Cash On Delivery",
-            },
+          this.setState({ 
             isLoading: false,
             isModalOpen: true,
             modalMsg: "Thanks ! Your order placed successfully.",
@@ -114,57 +96,88 @@ class Checkout extends Component {
         >
           Payment : {this.props.totalPrice} BDT only{" "}
         </h4>
-
-        <form
-          style={{
-            border: "1px solid #f0eee9",
-            boxShadow: "1px 1px #dbd9d5",
-            borderRadius: "5px",
-            padding: "20px",
+        <Formik
+          initialValues={{
+            deliveryAddress: "",
+            phone: "",
+            paymentType: "Cash On Delivery",
+          }}
+          onSubmit={(values) => {
+            this.submitHandler(values);
+            console.log("Checkout forms values :", values);
+          }}
+          validate={(values) => {
+            const errors = {};
+            if (!values.deliveryAddress) {
+              errors.deliveryAddress = "Required";
+            }
+            if (!values.phone) {
+              errors.phone = "Required";
+            } else if (
+              !/(^(\+8801|8801|01|008801))[1|3-9]{1}(\d){8}$/.test(values.phone)
+            ) {
+              errors.phone = "Invalid Number";
+            }
+            console.log(errors);
+            return errors;
           }}
         >
-          <textarea
-            name="deliveryAddress"
-            value={this.state.values.deliveryAddress}
-            className="form-control"
-            placeholder="Delivery Address"
-            onChange={(e) => this.inputChangeHandenler(e)}
-          />
-          <br />
-          <input
-            name="phone"
-            value={this.state.values.phone}
-            className="form-control"
-            placeholder="Contact Number"
-            onChange={(e) => this.inputChangeHandenler(e)}
-          />
-          <br />
-          <select
-            name="paymentType"
-            value={this.state.values.paymentType}
-            className="form-control"
-            onChange={(e) => this.inputChangeHandenler(e)}
-          >
-            <option value="Cash On Delivery">Cash On Delivery</option>
-            <option value="Bkash">Bkash</option>
-          </select>
-          <br />
-          <Button
-            style={{ backgroundColor: "#f55195" }}
-            className="mr-auto"
-            onClick={this.submitHandler}
-            disabled={!this.props.purchasable}
-          >
-            Place Order
-          </Button>
-          <Button
-            style={{ backgroundColor: "orange" }}
-            className="ml-3"
-            onClick={this.goBack}
-          >
-            Cancel
-          </Button>
-        </form>
+          {({ values, handleChange, handleSubmit, touched, errors }) => (
+            <form
+              style={{
+                border: "1px solid #f0eee9",
+                boxShadow: "1px 1px #dbd9d5",
+                borderRadius: "5px",
+                padding: "20px",
+              }}
+              onSubmit={handleSubmit}
+            >
+              <textarea
+                name="deliveryAddress"
+                value={values.deliveryAddress}
+                className="form-control"
+                placeholder="Delivery Address"
+                onChange={handleChange}
+              />
+              <span style={{ color: "orange" }}>{errors.deliveryAddress}</span>
+              <br />
+              <input
+                name="phone"
+                value={values.phone}
+                className="form-control"
+                placeholder="Contact Number"
+                onChange={handleChange}
+              />
+              <span style={{ color: "orange" }}>{errors.phone}</span>
+              <br />
+              <select
+                name="paymentType"
+                value={values.paymentType}
+                className="form-control"
+                onChange={handleChange}
+              >
+                <option value="Cash On Delivery">Cash On Delivery</option>
+                <option value="Bkash">Bkash</option>
+              </select>
+              <br />
+              <Button
+                type="submit"
+                style={{ backgroundColor: "#f55195" }}
+                className="mr-auto"
+                disabled={!this.props.purchasable}
+              >
+                Place Order
+              </Button>
+              <Button
+                style={{ backgroundColor: "orange" }}
+                className="ml-3"
+                onClick={this.goBack}
+              >
+                Cancel
+              </Button>
+            </form>
+          )}
+        </Formik>
       </div>
     );
     return (
