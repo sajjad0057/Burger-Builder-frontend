@@ -5,6 +5,7 @@ import Orders from "./Orders/Orders.jsx";
 import Checkout from "./Orders/Checkout/Checkout.jsx";
 import { Route, Switch,Redirect } from "react-router-dom"; // we can aslo import {Route } from "react-router" , But it's recommended to import { Route } from "react-router-dom",
 import Auth from "./Auth/Auth.js";
+import { authCheck } from "../redux/authActionCreators.js";
 import { connect } from "react-redux";
 
 const mapStateToProps = (state) => {
@@ -13,7 +14,17 @@ const mapStateToProps = (state) => {
   };
 };
 
+const mapDispatchToProps = dispatch =>{
+  return{
+    authCheck : ()=>dispatch(authCheck())
+  }
+}
+
 const Main = (props) => {
+  React.useEffect(() => {
+    props.authCheck()
+
+  })
   let routes = null;
   if (props.token === null) {
     routes = (
@@ -40,4 +51,4 @@ const Main = (props) => {
   );
 };
 
-export default connect(mapStateToProps)(Main);
+export default connect(mapStateToProps,mapDispatchToProps)(Main);
