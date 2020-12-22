@@ -3,15 +3,12 @@ import { auth } from "../../redux/authActionCreators.js";
 import { connect } from "react-redux";
 import { Formik } from "formik";
 
-
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    auth : (email,password,signUpMode) => dispatch(auth(email,password,signUpMode))
-  }
-}
-
-
-
+    auth: (email, password, signUpMode) =>
+      dispatch(auth(email, password, signUpMode)),
+  };
+};
 
 class Auth extends Component {
   state = {
@@ -34,7 +31,11 @@ class Auth extends Component {
           }}
           onSubmit={(values) => {
             console.log("Values :", values);
-            this.props.auth(values.email,values.password,this.state.signUpMode)
+            this.props.auth(
+              values.email,
+              values.password,
+              this.state.signUpMode
+            );
           }}
           validate={(values) => {
             const errors = {};
@@ -49,7 +50,9 @@ class Auth extends Component {
             if (!values.password) {
               errors.password = "Required";
             } else if (values.password.length < 6) {
-              errors.password = "Must must be at least 6 Characters";
+              if (this.state.signUpMode) {
+                errors.password = "Must must be at least 6 Characters";
+              }
             }
             if (this.state.signUpMode) {
               if (!values.passwordConfirm) {
@@ -134,4 +137,4 @@ class Auth extends Component {
   }
 }
 
-export default connect(null,mapDispatchToProps) (Auth);
+export default connect(null, mapDispatchToProps)(Auth);

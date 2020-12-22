@@ -14,10 +14,11 @@ const INITIAl_STATE = {
   ],
   totalPrice: 40,
   purchasable: false,
-  orders : [],
-  orderLoading : true,
-  orderErr : false,
-
+  orders: [],
+  orderLoading: true,
+  orderErr: false,
+  token: null,
+  userId: null,
 };
 
 export const reducer = (state = INITIAl_STATE, action) => {
@@ -38,8 +39,7 @@ export const reducer = (state = INITIAl_STATE, action) => {
       //console.log("reucer.js ---->", ingredients, action.payload);
       for (let item of ingredients) {
         //console.log(item);
-        if (item.type === action.payload && item.amount>0) {
-          
+        if (item.type === action.payload && item.amount > 0) {
           item.amount--;
           return {
             ...state,
@@ -47,7 +47,6 @@ export const reducer = (state = INITIAl_STATE, action) => {
             totalPrice: state.totalPrice - INGREDIENT_PRICES[action.payload],
           };
         }
-        
       }
 
     case actionTypes.UPDATE_PURCHASABLE:
@@ -70,37 +69,41 @@ export const reducer = (state = INITIAl_STATE, action) => {
         ],
         totalPrice: 40,
         purchasable: false,
-
-      }
+      };
     case actionTypes.LOAD_ORDERS:
-      let orders = []
+      let orders = [];
       //console.log("reducer.js--->check order payload :",action.payload);
-      for (let key in action.payload){
+      for (let key in action.payload) {
         //console.log("reducer.js--->check order order key :",action.payload[key]);
         // let obj =action.payload[key]
         // obj.id=key
-        // orders.push(  
+        // orders.push(
         //   obj
         // )
         // *****Alternate way to update order Array given below****
         orders.push({
           ...action.payload[key],
-          id : key,
-        })
+          id: key,
+        });
       }
       //console.log("reducer.js--->check new orders array :",orders);
-      return{
+      return {
         ...state,
-        orders : orders,
-        orderLoading : false,
-      }
+        orders: orders,
+        orderLoading: false,
+      };
     case actionTypes.ORDER_LOAD_FAILED:
-      return{
+      return {
         ...state,
-        orderErr:true,
-        orderLoading : false,
-
-      }
+        orderErr: true,
+        orderLoading: false,
+      };
+    case actionTypes.AUTH_SUCCESS:
+      return {
+        ...state,
+        token: action.payload.token,
+        userId: action.payload.userId,
+      };
 
     default:
       return state;
