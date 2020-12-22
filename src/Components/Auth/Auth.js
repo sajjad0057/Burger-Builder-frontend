@@ -2,6 +2,15 @@ import React, { Component } from "react";
 import { Formik } from "formik";
 
 class Auth extends Component {
+  state = {
+    signUpMode: true,
+  };
+  switchModeHandler = () => {
+    //console.log(this.state.signUpMode);s
+    this.setState((state) => {
+      return { signUpMode: !state.signUpMode };
+    });
+  };
   render() {
     return (
       <div>
@@ -12,42 +21,57 @@ class Auth extends Component {
             passwordConfirm: "",
           }}
           onSubmit={(values) => {
-            console.log("Values :",values);
+            console.log("Values :", values);
           }}
+          validate={(values) => {
+            const errors = {};
+            if (!values.email) {
+              errors.email = "Required";
+            } else if (
+              !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
+            ) {
+              errors.email = "Invalid email address";
+            }
 
-          validate={(values)=>{
-              const errors = {}
-              if(!values.email){
-                  errors.email='Required'
-              }
-              else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-                errors.email = 'Invalid email address';
+            if (!values.password) {
+              errors.password = "Required";
+            } else if (values.password.length < 6) {
+              errors.password = "Must must be at least 6 Characters";
+            }
+            if(this.state.signUpMode){
+              if (!values.passwordConfirm) {
+                errors.passwordConfirm = "Required";
+              } else if (values.password !== values.passwordConfirm) {
+                errors.passwordConfirm = "Password dose not matched";
               }
 
-              if(!values.password){
-                  errors.password='Required'
-              }
-              else if(values.password.length<6){
-                  errors.password="Must must be at least 6 Characters"
-              }
-              if(!values.passwordConfirm){
-                  errors.passwordConfirm="Required"
-              }
-              else if(values.password !== values.passwordConfirm){
-                  errors.passwordConfirm = 'Password dose not matched'
-              }
-              //console.log("errors",errors);
-              return errors
-
+            }
+            
+            //console.log("errors",errors);
+            return errors;
           }}
         >
-          {({values, handleChange, handleSubmit,errors}) => (
-            <div style={{
-                border:"1px solid #e6e8e8",
-                padding:"15px",
-                borderRadius:"7px",
-
-            }}>
+          {({ values, handleChange, handleSubmit, errors }) => (
+            <div
+              style={{
+                border: "1px solid #e6e8e8",
+                padding: "15px",
+                borderRadius: "7px",
+              }}
+            >
+              <button
+                onClick={this.switchModeHandler}
+                style={{
+                  width: "100%",
+                  backgroundColor: "#f55195",
+                  color: "white",
+                }}
+                className="btn btn-lg"
+              >
+                Switch to {this.state.signUpMode ? "Login" : "Sign Up"}
+              </button>
+              <br />
+              <br />
               <form onSubmit={handleSubmit}>
                 <input
                   type="text"
@@ -57,8 +81,8 @@ class Auth extends Component {
                   value={values.email}
                   onChange={handleChange}
                 />
-                <span style={{color:"red"}}>{errors.email}</span>
-                <br/>
+                <span style={{ color: "red" }}>{errors.email}</span>
+                <br />
                 <input
                   type="password"
                   name="password"
@@ -67,21 +91,31 @@ class Auth extends Component {
                   value={values.password}
                   onChange={handleChange}
                 />
-                <span style={{color:"red"}}>{errors.password}</span>
-                <br/>
-                <input
-                  type="password"
-                  name="passwordConfirm"
-                  placeholder="Confrim password"
-                  className="form-control"
-                  value={values.passwordConfirm}
-                  onChange={handleChange}
-                />
-                <span style={{color:"red"}}>{errors.passwordConfirm}</span>
-                <br/>
-              <button type="submit" className="btn btn-success">Sign Up</button>
-              </form>
+                <span style={{ color: "red" }}>{errors.password}</span>
+                <br />
+                {this.state.signUpMode ? (
+                  <div>
+                    <input
+                      type="password"
+                      name="passwordConfirm"
+                      placeholder="Confrim password"
+                      className="form-control"
+                      value={values.passwordConfirm}
+                      onChange={handleChange}
+                    />
+                    <span style={{ color: "red" }}>
+                      {errors.passwordConfirm}
+                    </span>
+                    <br />
+                  </div>
+                ) : (
+                  null
+                )}
 
+                <button type="submit" className="btn btn-success">
+                  {this.state.signUpMode ? "Sign up" : "Login"}
+                </button>
+              </form>
             </div>
           )}
         </Formik>
