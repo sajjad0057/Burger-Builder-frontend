@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Component}from "react";
 import Header from "./Header/Header.jsx";
 import BurgerBuilder from "./BurgerBuilder/BurgerBuilder.jsx";
 import Orders from "./Orders/Orders.jsx";
@@ -20,35 +20,40 @@ const mapDispatchToProps = dispatch =>{
   }
 }
 
-const Main = (props) => {
-  React.useEffect(() => {
-    props.authCheck()
+class Main extends Component{
 
-  })
-  let routes = null;
-  if (props.token === null) {
-    routes = (
-      <Switch>
-        <Route path="/login" component={Auth} />
-        <Redirect to="/login" />
-      </Switch>
-    );
-  } else {
-    routes = (
-      <Switch>
-        <Route path="/orders" component={Orders} />
-        <Route path="/checkout" component={Checkout} />
-        <Route path="/" exact component={BurgerBuilder} />
-        <Redirect to="/"/>
-      </Switch>
-    );
+  componentDidMount(){
+    this.props.authCheck()
   }
-  return (
-    <div>
-      <Header />
-      <div className="container">{routes}</div>
-    </div>
-  );
+  render(){
+    let routes = null;
+    if (this.props.token === null) {
+      routes = (
+        <Switch>
+          <Route path="/login" component={Auth} />
+          <Redirect to="/login" />
+        </Switch>
+      );
+    } else {
+      routes = (
+        <Switch>
+          <Route path="/orders" component={Orders} />
+          <Route path="/checkout" component={Checkout} />
+          <Route path="/" exact component={BurgerBuilder} />
+          <Redirect to="/"/>
+        </Switch>
+      );
+    }
+    return (
+      <div>
+        <Header />
+        <div className="container">{routes}</div>
+      </div>
+    );
+
+  }
+
+
 };
 
 export default connect(mapStateToProps,mapDispatchToProps)(Main);
