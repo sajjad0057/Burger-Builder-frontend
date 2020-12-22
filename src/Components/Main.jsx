@@ -5,6 +5,7 @@ import Orders from "./Orders/Orders.jsx";
 import Checkout from "./Orders/Checkout/Checkout.jsx";
 import { Route, Switch,Redirect } from "react-router-dom"; // we can aslo import {Route } from "react-router" , But it's recommended to import { Route } from "react-router-dom",
 import Auth from "./Auth/Auth.js";
+import Logout from "./Auth/Logout.js";
 import { authCheck } from "../redux/authActionCreators.js";
 import { connect } from "react-redux";
 
@@ -40,6 +41,7 @@ class Main extends Component{
           <Route path="/orders" component={Orders} />
           <Route path="/checkout" component={Checkout} />
           <Route path="/" exact component={BurgerBuilder} />
+          <Route path="/logout" component={Logout} />
           <Redirect to="/"/>
         </Switch>
       );
