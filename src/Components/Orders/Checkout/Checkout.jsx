@@ -11,6 +11,8 @@ const mapStateToProps = (state) => {
     ingredients: state.ingredients,
     totalPrice: state.totalPrice,
     purchasable: state.purchasable,
+    userId: state.userId,
+    token: state.token,
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -46,15 +48,17 @@ class Checkout extends Component {
       customer: values,
       price: this.props.totalPrice,
       orderTime: new Date().toLocaleString(),
+      userId: this.props.userId,
     };
     axios
       .post(
-        "https://burgerbuilder-308a8-default-rtdb.firebaseio.com/orders.json",
+        "https://burgerbuilder-308a8-default-rtdb.firebaseio.com/orders.json?auth=" +
+          this.props.token,
         order
       )
       .then((response) => {
         if (response.status === 200) {
-          this.setState({ 
+          this.setState({
             isLoading: false,
             isModalOpen: true,
             modalMsg: "Thanks ! Your order placed successfully.",

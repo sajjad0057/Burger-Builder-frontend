@@ -101,6 +101,7 @@ export const reducer = (state = INITIAl_STATE, action) => {
         orderLoading: false,
       };
     case actionTypes.AUTH_SUCCESS:
+      //console.log("success",state);
       return {
         ...state,
         token: action.payload.token,
@@ -112,7 +113,7 @@ export const reducer = (state = INITIAl_STATE, action) => {
         ...state,
         token: null,
         userId: null,
-        authFailedMsg : action.payload
+        authFailedMsg : null,
       };
       case actionTypes.AUTH_LOADING:
         return{

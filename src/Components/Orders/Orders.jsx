@@ -11,6 +11,8 @@ const mapStateToProps = (state)=>{
         orders : state.orders,
         orderLoading : state.orderLoading,
         orderErr : state.orderErr,
+        token : state.token,
+        userId : state.userId,
     }
 }
 
@@ -18,7 +20,7 @@ const mapStateToProps = (state)=>{
 
 const mapDispatchToProps = dispatch =>{
     return{
-        fatchOrders : ()=>dispatch(fetchOrders())
+        fatchOrders : (token,userId)=>dispatch(fetchOrders(token,userId))
     }
 }
 
@@ -26,7 +28,8 @@ const mapDispatchToProps = dispatch =>{
 class Orders extends Component{
 
     componentDidMount(){
-        this.props.fatchOrders()
+        //console.log("token",this.props.token);
+        this.props.fatchOrders(this.props.token,this.props.userId)
     }
     // componentDidUpdate(){
     // console.log("orders.jsx ----check props:",this.props);

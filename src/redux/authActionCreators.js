@@ -56,8 +56,8 @@ export const auth = (email, password, signUpMode) => (dispatch) => {
         dispatch(authSuccess(response.data.idToken , response.data.localId))
     })
     .catch((err)=>{
-        const error=err.response.data.error.message
-        dispatch(authFailed(error))
+        console.log("err.response.data.error.messageror",err.response.data.error.message);
+        dispatch(authFailed(err.response.data.error.message))
         dispatch(authLoading(false))
     })
 };
