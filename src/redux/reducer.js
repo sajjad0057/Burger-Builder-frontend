@@ -19,6 +19,8 @@ const INITIAl_STATE = {
   orderErr: false,
   token: null,
   userId: null,
+  authLoading:false,
+  authFailedMsg:null,
 };
 
 export const reducer = (state = INITIAl_STATE, action) => {
@@ -111,6 +113,11 @@ export const reducer = (state = INITIAl_STATE, action) => {
         token: null,
         userId: null,
       };
+      case actionTypes.AUTH_LOADING:
+        return{
+          ...state,
+          authLoading : action.payload,
+        }
 
     default:
       return state;
