@@ -22,7 +22,7 @@ export const authLoading = isLoading =>{
 export const authFailed = (errMsg)=>{
     return {
         type:actionTypes.AUTH_FAILED,
-        payload: errMsg+". Please Try again "
+        payload: errMsg+" ! Please Try again "
     }
 }
 
@@ -56,7 +56,8 @@ export const auth = (email, password, signUpMode) => (dispatch) => {
         dispatch(authSuccess(response.data.idToken , response.data.localId))
     })
     .catch((err)=>{
-        console.log(err.message)
+        const error=err.response.data.error.message
+        dispatch(authFailed(error))
         dispatch(authLoading(false))
     })
 };

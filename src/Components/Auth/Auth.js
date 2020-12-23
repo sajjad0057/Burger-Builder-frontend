@@ -3,6 +3,7 @@ import Spinner from "../Spinner/Spinner.js";
 import { auth } from "../../redux/authActionCreators.js";
 import { connect } from "react-redux";
 import { Formik } from "formik";
+import { Alert } from "reactstrap";
 
 const mapStateToProps = (state) => {
   return {
@@ -29,6 +30,10 @@ class Auth extends Component {
     });
   };
   render() {
+    let error = null;
+    if(this.props.authFailedMsg!==null){
+      error = <Alert color="warning">{this.props.authFailedMsg}</Alert>
+    }
     let form = null;
     if (this.props.authLoading) {
       form = <Spinner />;
@@ -147,6 +152,7 @@ class Auth extends Component {
     }
     return (
         <div>
+          {error}
           {form}
         </div>
     );
