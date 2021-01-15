@@ -31,33 +31,40 @@ export const auth = (email, password, signUpMode) => (dispatch) => {
   const authData = {
     email: email,
     password: password,
-    returnSecureToken: true,
   };
+
+  const header = {
+      headers : {
+        "Content-Type": "application/json"
+      }
+  }
 
   let authUrl = null;
   if (signUpMode) {
-    authUrl = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=";
+    authUrl = "http://127.0.0.1:8000/api/user/";
   } else {
     authUrl =
       "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=";
   }
 
-  const API_KEY = "AIzaSyDoMS9yKGcOPi8yt3sMmuiPcS_tpjNacmg";
+  
 
   axios
-    .post(authUrl + API_KEY, authData)
+    .post(authUrl,authData,header)
     .then((response) => {
-        console.log(response);
+        console.log("DRF response ----> : ",response);
         dispatch(authLoading(false))
-        localStorage.setItem("token",response.data.idToken)
-        localStorage.setItem("userId",response.data.localId)
-        const expirationTime =new Date(new Date().getTime() + response.data.expiresIn * 1000)
-        localStorage.setItem('expirationTime',expirationTime)
-        dispatch(authSuccess(response.data.idToken , response.data.localId))
+        // localStorage.setItem("token",response.data.idToken)
+        // localStorage.setItem("userId",response.data.localId)
+        // const expirationTime =new Date(new Date().getTime() + response.data.expiresIn * 1000)
+        // localStorage.setItem('expirationTime',expirationTime)
+        // dispatch(authSuccess(response.data.idToken , response.data.localId))
     })
     .catch((err)=>{
-        console.log("err.response.data.error.messageror",err.response.data.error.message);
-        dispatch(authFailed(err.response.data.error.message))
+        // The Object.keys() method returns an array of a given object's own enumerable property
+        const key = Object.keys(err.response.data)[0]    // DRF passing error messages as an object. so here we Useing js "Object" key to accessing required data.
+        console.log("err.response",err.response);
+        dispatch(authFailed(`${key.toUpperCase()} : ${err.response.data[key]}`))
         dispatch(authLoading(false))
     })
 };
