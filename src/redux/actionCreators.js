@@ -46,7 +46,13 @@ export const orderLoadFailed = () =>{
 
 
 export const fetchOrders = (token,userId) => dispatch =>{
-    axios.get(`http://127.0.0.1:8000/api/order?id=${userId}`)
+    const header = {
+        // according DRF and djangorestframework-simplejwt doc, if we use JWT token , when for Authorization must be do this.. 
+        headers : {
+            "Authorization" : `Bearer ${token}`
+        }
+    }
+    axios.get(`http://127.0.0.1:8000/api/order?id=${userId}`,header)
     .then(response=>dispatch(loadOrders(response.data)))
     .catch(err=>{
         console.log("error ---->",err.response)

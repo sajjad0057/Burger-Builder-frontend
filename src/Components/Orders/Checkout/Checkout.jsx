@@ -59,6 +59,7 @@ class Checkout extends Component {
     const header = {
       headers : {
         "Content-Type" :" application/json",
+        "Authorization" : `Bearer ${this.props.token}`,
       }
     }
 
