@@ -43,21 +43,30 @@ class Checkout extends Component {
     this.setState({
       isLoading: true,
     });
+
+    const ingredients_copy = [...this.props.ingredients]
+    const ingredients_obj = {}
+    for (let i of ingredients_copy){
+      ingredients_obj[i.type]=i.amount
+    }
     const order = {
-      ingredients: this.props.ingredients,
+      ingredients: ingredients_obj,
       customer: values,
       price: this.props.totalPrice,
       orderTime: new Date().toLocaleString(),
-      userId: this.props.userId,
+      user : this.props.userId,
     };
+    const header = {
+      headers : {
+        "Content-Type" :" application/json",
+      }
+    }
+
     axios
-      .post(
-        "https://burgerbuilder-308a8-default-rtdb.firebaseio.com/orders.json?auth=" +
-          this.props.token,
-        order
-      )
+      .post("http://127.0.0.1:8000/api/order/",order,header)
       .then((response) => {
-        if (response.status === 200) {
+        // in DRF 201 is success code
+        if (response.status === 201) {
           this.setState({
             isLoading: false,
             isModalOpen: true,
@@ -75,6 +84,7 @@ class Checkout extends Component {
         }
       })
       .catch((err) => {
+        console.log("err--->",err.response);
         this.setState({
           isLoading: false,
           isModalOpen: true,
