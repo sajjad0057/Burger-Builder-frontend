@@ -3,7 +3,12 @@ import React from "react";
 
 const Order =(props)=>{
     //console.log("single order.js--->",props);
-    const ingredientSummery=props.order.ingredients.map(item=>{
+    const ingredient_obj = props.order.ingredients;
+    const ingredients = []
+    for (let [key,value] of Object.entries(ingredient_obj)){
+        ingredients.push({type:key,amount:value})
+    }
+    const ingredientSummery=ingredients.map(item=>{
         return(
             <span key={item.type}
             style={{

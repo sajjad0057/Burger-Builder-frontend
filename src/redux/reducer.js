@@ -73,22 +73,9 @@ export const reducer = (state = INITIAl_STATE, action) => {
         purchasable: false,
       };
     case actionTypes.LOAD_ORDERS:
-      let orders = [];
-      //console.log("reducer.js--->check order payload :",action.payload);
-      for (let key in action.payload) {
-        //console.log("reducer.js--->check order order key :",action.payload[key]);
-        // let obj =action.payload[key]
-        // obj.id=key
-        // orders.push(
-        //   obj
-        // )
-        // *****Alternate way to update order Array given below****
-        orders.push({
-          ...action.payload[key],
-          id: key,
-        });
-      }
-      //console.log("reducer.js--->check new orders array :",orders);
+      // form DRF order are comming in array
+      let orders = [...action.payload];
+      
       return {
         ...state,
         orders: orders,
